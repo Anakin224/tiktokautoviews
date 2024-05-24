@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Column TikTok Video Player</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        #videoContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .video-column {
+            margin: 10px;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            flex: 0 0 calc(20% - 20px); /* 20% width minus margins for medium size */
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        #urlInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        #playButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="urlInput" placeholder="Collez le lien de la vidéo TikTok ici">
+    <button id="playButton">Lire Vidéo</button>
+
+    <div id="videoContainer"></div>
+
+    <script>
+        const playButton = document.getElementById('playButton');
+        const urlInput = document.getElementById('urlInput');
+        const videoContainer = document.getElementById('videoContainer');
+        const refreshInterval = 8000; // 8000 milliseconds = 8 seconds
+
+        function playVideos(url) {
+            videoContainer.innerHTML = '';
+            for (let i = 0; i < 10; i++) { // 10 columns
+                const videoColumn = document.createElement('div');
+                videoColumn.className = 'video-column';
+                const video = document.createElement('video');
+                video.src = url;
+                video.controls = true;
+                videoColumn.appendChild(video);
+                videoContainer.appendChild(videoColumn);
+                video.play();
+                setTimeout(() => {
+                    video.pause();
+                }, 5000); // Stop video after 5 seconds
+            }
+        }
+
+        playButton.addEventListener('click', () => {
+            const url = urlInput.value;
+            if (url) {
+                playVideos(url);
+                setInterval(() => {
+                    playVideos(url);
+                }, refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>
